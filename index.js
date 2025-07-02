@@ -9,7 +9,7 @@ const Utils = require("./lib/Utils")
 const util = new Utils()
 class Database {
 
-    constructor(db_host, db_name, db_username, db_pass, port = 3306, sequelize_options = {}) {
+    constructor(db_host, db_name, db_username, db_pass, sequelize_options = {}) {
         this.tables = {}
         this.sequelize = new Sequelize(db_name, db_username, db_pass, {
             host: db_host,
