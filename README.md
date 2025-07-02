@@ -17,3 +17,46 @@ await db.Delete
 // check GetDB method signature for guide
 
 ```
+
+```
+// from root folder of your prject: models/user.js
+
+// models/user.js (or models/user.ts if using TypeScript)
+
+module.exports = (sequelize, DataTypes) => {
+
+    const User = sequelize.define('users', {
+        id: {
+            type: DataTypes.INTEGER,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        full_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        email: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: "UindexEmail"
+        },
+        phone: {
+            type: DataTypes.STRING,
+            allowNull: false,
+            unique: "UindexPhone"
+        },
+    }, {
+        underscored: true,
+
+        freezeTableName: true
+    });
+
+    return User;
+};
+
+
+
+
+
+
+```
