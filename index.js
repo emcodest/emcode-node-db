@@ -3,20 +3,22 @@
 //++++++++++++++++++++++++++++++++++++++++++++ 
 
 const { Sequelize, QueryTypes } = require('sequelize');
-const models_path = require("path").join(__dirname, "..", "models")
+//const models_path = require("path").join(__dirname, "..", "models")
 //const UserModel = require("../models/users")
 const Utils = require("./lib/Utils")
 const util = new Utils()
 class Database {
-
-    constructor(db_host, db_name, db_username, db_pass, sequelize_options = {}) {
+    models_path = undefined
+    constructor(db_host, db_name, db_username, db_pass, models_path, sequelize_options = {}) {
+        console.log('\x1b[41m%s\x1b[0m', '# sequelize_options', sequelize_options)
         this.tables = {}
+        this.models_path = models_path
         this.sequelize = new Sequelize(db_name, db_username, db_pass, {
             host: db_host,
-            // dialect: "mysql",
+            //dialect: "mysql",
             // port,
             logging: process.env.NODE_ENV != "production" ? true : false,
-            sequelize_options
+            ...sequelize_options
         });
 
 
@@ -69,7 +71,9 @@ class Database {
     }
 
     async Tables() {
-        const files = await util.ListFilesInPath(models_path)
+        // console.log('\x1b[41m%s\x1b[0m', 'this.models_path', this.models_path)
+        const files = await util.ListFilesInPath(this.models_path)
+
         const ufiles = files.map((r) => r.replace(".js", ""))
         return ufiles
     }
@@ -77,7 +81,8 @@ class Database {
         try {
             const tables = await this.Tables();
             for (const tb of tables) {
-                const Model = require(`../models/${tb}`);
+                const Model = require(`${this.models_path}/${tb}`)
+                // const Model = require(`../models/${tb}`);
                 const tab = await Model(this.sequelize, Sequelize.DataTypes);
                 this.tables[tb] = tab;
 
@@ -106,12 +111,12 @@ class Database {
 
 let dbInstance
 /** get a single instance of the db */
-async function GetDB(db_host, db_name, db_username, db_pass, sequelize_options = { port: 3306, dialect: "mysql" }) {
+async function GetDB(db_host, db_name, db_username, db_pass, models_path, sequelize_options = { port: 3306, dialect: "mysql" }) {
     if (dbInstance) {
         console.log('\x1b[41m%s\x1b[0m', '## cached db instance returned', '')
         return dbInstance
     }
-    dbInstance = new Database(db_host, db_name, db_username, db_pass, sequelize_options)
+    dbInstance = new Database(db_host, db_name, db_username, db_pass, models_path, sequelize_options)
     await dbInstance.Connect()
     return dbInstance
 }

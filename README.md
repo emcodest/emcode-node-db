@@ -4,12 +4,12 @@ Easily work with MYSQL - Sequelize in NodeJS Env
 
 ### HOW IT WORKS
 
-- Make sure you have your models folder as usual with sequelize
+- Make sure you have your models folder as usual with sequelize and also know the path
 - It will auto create tables based on the schema you stored there
 
 ```
 const GetDB = require("emcode-node-db")
-const db =  GetDB(db_host, db_name, db_username, db_pass, sequelize_options = {port: 3306, dialet: "mysql"})
+const db =  GetDB(db_host, db_name, db_username, db_pass, models_path, sequelize_options = {port: 3306, dialect: "mysql"})
 await db.Select
 await db.Insert
 await db.Update
