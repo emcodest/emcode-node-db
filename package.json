@@ -1,0 +1,16 @@
+{
+  "name": "emcode-node-db",
+  "version": "1.0.0",
+  "description": "Easily work with Sequelize in NodeJS Env",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Emcode",
+  "license": "ISC",
+  "dependencies": {
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7"
+  }
+}
